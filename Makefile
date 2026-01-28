@@ -1,14 +1,14 @@
-# Detector for OS
+
 UNAME_S := $(shell uname -s)
 
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 
-# Default paths (standard for Linux/MSYS2)
+
 INCLUDES = -Iinclude
 LDFLAGS = 
 
-# macOS specific overrides (Homebrew)
+
 ifeq ($(UNAME_S),Darwin)
 	INCLUDES += -I/opt/homebrew/include
 	LDFLAGS += -L/opt/homebrew/lib

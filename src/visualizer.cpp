@@ -19,7 +19,7 @@ struct StateCounts {
   int recovered = 0;
 };
 
-// Simple struct to hold agent spatial state at a point in time
+
 struct Snapshot {
   int agentId;
   int townId;
@@ -33,16 +33,16 @@ struct Snapshot {
   int denomination;
 };
 
-// Global config (mirrors dashboard logic)
+
 struct Config {
   int numTowns = 5;
   int population = 1000;
-  int schoolsPerTown = 3;   // Default, overwritten by config
-  int religiousPerTown = 5; // Default, overwritten by config
+  int schoolsPerTown = 3;   
+  int religiousPerTown = 5; 
   int seed = 42;
 } g_config;
 
-// Load parameters.cfg to get town counts
+
 void loadConfig() {
   std::ifstream file("parameters.cfg");
   std::string line;
@@ -69,28 +69,28 @@ void loadConfig() {
   }
 }
 
-// Pseudo-random jitter for agent offsets
+
 sf::Vector2f getAgentOffset(int agentId) {
   float x = std::fmod(agentId * 123.45f, 40.0f) - 20.0f;
   float y = std::fmod(agentId * 678.90f, 40.0f) - 20.0f;
   return {x, y};
 }
 
-// Deterministic home position for an agent in their district
+
 sf::Vector2f getAgentHomePos(int agentId, int windowSize) {
   std::mt19937 rng(agentId + 8888 + g_config.seed);
   std::uniform_real_distribution<float> dist(0.1f, 0.9f);
   return {dist(rng) * windowSize, dist(rng) * windowSize};
 }
 
-// Pseudo-random but consistent location coordinate generator
+
 sf::Vector2f getLocationCoords(int locationId, int salt, int windowSize) {
   std::mt19937 rng(salt + locationId * 9876 + g_config.seed);
   std::uniform_real_distribution<float> dist(0.1f, 0.9f);
   return {dist(rng) * windowSize, dist(rng) * windowSize};
 }
 
-// Deterministic grid position for school hubs
+
 sf::Vector2f getSchoolGridCoords(int schoolId, int totalSchools,
                                  int windowSize) {
   if (totalSchools <= 0)
@@ -129,7 +129,7 @@ int main() {
   std::map<int, std::vector<int>> townReligious;
   std::map<int, std::vector<int>> townWorkplaces;
   std::map<int, std::map<int, int>>
-      overallTrends; // [time][claimId] -> Adoption count
+      overallTrends; 
   int maxTime = 0;
 
   if (file.is_open()) {
@@ -189,7 +189,7 @@ int main() {
       }
       timeline[time].push_back(s);
 
-      // Track trends (Adoption = P, N, or R)
+      
       if (s.state >= 3) {
         overallTrends[time][s.claimId]++;
       }
@@ -365,7 +365,7 @@ int main() {
     float simAreaYOffset = tabAreaHeight;
     float availableSimHeight = (float)WINDOW_SIZE - simAreaYOffset;
 
-    // Background Zones
+    
     if (currentView != CHART_VIEW) {
       if (townReligious.count(currentDistrictId)) {
         for (int rid : townReligious[currentDistrictId]) {
@@ -373,7 +373,7 @@ int main() {
           pos.y = simAreaYOffset +
                   (pos.y / (float)WINDOW_SIZE) * availableSimHeight;
 
-          // Variable large radius for ~70% total coverage
+          
           std::mt19937 rRng(rid * 111 + 555 + g_config.seed);
           std::uniform_real_distribution<float> rDist(80.0f, 130.0f);
           float radius = rDist(rRng);
@@ -382,7 +382,7 @@ int main() {
           zone.setOrigin({radius, radius});
           zone.setPosition(pos);
           zone.setFillColor(sf::Color(
-              168, 85, 247, 40)); // slightly more transparent for overlap
+              168, 85, 247, 20)); 
           zone.setOutlineThickness(2.0f);
           zone.setOutlineColor(sf::Color(168, 85, 247, 180));
           window.draw(zone);
@@ -397,7 +397,7 @@ int main() {
           sf::ConvexShape zone;
           zone.setPointCount(6);
 
-          // Variable large size
+          
           std::mt19937 wRng(wid * 222 + 888 + g_config.seed);
           std::uniform_real_distribution<float> wDist(80.0f, 120.0f);
           float r = wDist(wRng);
@@ -406,7 +406,7 @@ int main() {
             zone.setPoint(
                 i, {r * (float)cos(i * 1.047f), r * (float)sin(i * 1.047f)});
           zone.setPosition(pos);
-          zone.setFillColor(sf::Color(245, 158, 11, 30)); // overlapping amber
+          zone.setFillColor(sf::Color(245, 158, 11, 20)); 
           zone.setOutlineThickness(2.0f);
           zone.setOutlineColor(sf::Color(245, 158, 11, 150));
           window.draw(zone);
@@ -441,13 +441,13 @@ int main() {
     }
 
     if (currentView == CHART_VIEW) {
-      // Draw Adoption Trends Graph
+      
       float graphX = 50.0f;
       float graphY = simAreaYOffset + 50.0f;
       float graphW = WINDOW_SIZE - 100.0f;
       float graphH = availableSimHeight - 120.0f;
 
-      // Draw Axes
+      
       sf::Vertex axes[] = {
           sf::Vertex{sf::Vector2f(graphX, graphY), sf::Color(100, 100, 100)},
           sf::Vertex{sf::Vector2f(graphX, graphY + graphH),
@@ -459,13 +459,13 @@ int main() {
       window.draw(axes, 4, sf::PrimitiveType::Lines);
 
       if (maxTime > 0) {
-        // Use total population for scaling to show proportion
+        
         float totalPop = (float)g_config.population;
         if (totalPop <= 0)
           totalPop = 1.0f;
 
-        // Draw Lines for each claim
-        // Factual = Blue (0), Misinfo = Red (1)
+        
+        
         std::map<int, sf::Color> claimColors = {{0, sf::Color::Blue},
                                                 {1, sf::Color::Red}};
 
@@ -500,7 +500,7 @@ int main() {
         window.draw(yLabel);
       }
     } else {
-      // Draw Agents
+      
       for (auto &s : toDraw) {
         if (s.townId != currentDistrictId)
           continue;
@@ -526,7 +526,7 @@ int main() {
         float tx = 0.5f * homePos.x, ty = 0.5f * homePos.y;
         int hubs = (hasS ? 1 : 0) + (hasR ? 1 : 0) + (hasW ? 1 : 0);
         if (hubs > 0) {
-          // Choose ONE hub deterministically based on agent ID
+          
           std::vector<sf::Vector2f> availableHubs;
           if (hasS)
             availableHubs.push_back(sPos);
@@ -538,7 +538,7 @@ int main() {
           int chosenIndex = s.agentId % availableHubs.size();
           sf::Vector2f chosenHub = availableHubs[chosenIndex];
 
-          // 50% Home, 50% Selected Hub
+          
           tx += 0.5f * chosenHub.x;
           ty += 0.5f * chosenHub.y;
         } else {
@@ -562,7 +562,7 @@ int main() {
       }
     }
 
-    // UI Panel (Side Analytics & Legend)
+    
     sf::RectangleShape panel(
         sf::Vector2f({(float)UI_WIDTH, (float)WINDOW_SIZE}));
     panel.setPosition({(float)WINDOW_SIZE, 0});
@@ -641,7 +641,7 @@ int main() {
       timeLabel.setFillColor(sf::Color::White);
       window.draw(timeLabel);
 
-      // --- Legend Section ---
+      
       float legendY = 400.0f;
       sf::Text legendTitle(font, "LEGEND", 16);
       legendTitle.setPosition({(float)WINDOW_SIZE + 20, legendY});

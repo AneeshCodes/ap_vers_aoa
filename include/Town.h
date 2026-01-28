@@ -5,11 +5,6 @@
 #include <string>
 #include <vector>
 
-// ============================================================================
-// TOWN STRUCTURE
-// Represents a town containing schools and religious establishments
-// ============================================================================
-
 struct Town {
   int id;
   std::string name;
@@ -24,16 +19,16 @@ struct Town {
       : id(townId) {
     name = "Town_" + std::to_string(townId);
 
-    // Create schools
+    
     for (int i = 0; i < numSchools; ++i) {
-      int locId = townId * 1000 + i; // Unique ID scheme
+      int locId = townId * 1000 + i; 
       std::string locName = name + "_School_" + std::to_string(i);
       schools.emplace_back(locId, LocationType::SCHOOL, townId, locName,
                            schoolCap);
     }
 
-    // Create religious establishments
-    // Ensure every denomination except NONE has at least one building first
+    
+    
     int numReligiousDenoms =
         static_cast<int>(ReligiousDenomination::NUM_DENOMINATIONS) - 1;
     for (int i = 0; i < numReligious; ++i) {
@@ -41,10 +36,10 @@ struct Town {
 
       ReligiousDenomination denom;
       if (i < numReligiousDenoms) {
-        // One of each first
+        
         denom = static_cast<ReligiousDenomination>(i + 1);
       } else {
-        // Cycle through them for any remaining capacity
+        
         denom =
             static_cast<ReligiousDenomination>((i % numReligiousDenoms) + 1);
       }
@@ -86,7 +81,7 @@ struct Town {
           religiousCap, denom);
     }
 
-    // Create workplaces
+    
     for (int i = 0; i < numWorkplaces; ++i) {
       int locId = townId * 1000 + 500 + i;
       std::string locName = name + "_Work_" + std::to_string(i);
@@ -95,7 +90,7 @@ struct Town {
     }
   }
 
-  // Get a random school location
+  
   Location *getRandomSchool(std::mt19937 &rng) {
     if (schools.empty())
       return nullptr;
@@ -103,7 +98,7 @@ struct Town {
     return &schools[dist(rng)];
   }
 
-  // Get a random religious establishment
+  
   Location *getRandomReligious(std::mt19937 &rng) {
     if (religiousEstablishments.empty())
       return nullptr;
@@ -112,7 +107,7 @@ struct Town {
     return &religiousEstablishments[dist(rng)];
   }
 
-  // Get a random religious establishment of a specific denomination
+  
   Location *getRandomReligiousOfDenomination(std::mt19937 &rng,
                                              ReligiousDenomination denom) {
     std::vector<Location *> matches;
@@ -127,7 +122,7 @@ struct Town {
     return matches[dist(rng)];
   }
 
-  // Get a random workplace
+  
   Location *getRandomWorkplace(std::mt19937 &rng) {
     if (workplaces.empty())
       return nullptr;

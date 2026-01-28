@@ -3,30 +3,21 @@
 #include <string>
 #include <vector>
 
-// ============================================================================
-// LOCATION TYPE
-// ============================================================================
-
 enum class LocationType {
   SCHOOL,
   RELIGIOUS_ESTABLISHMENT,
   WORKPLACE,
-  HOME // For future expansion
+  HOME 
 };
-
-// ============================================================================
-// LOCATION STRUCTURE
-// Represents a physical location where agents gather
-// ============================================================================
 
 struct Location {
   int id;
   LocationType type;
   int townId;
   std::string name;
-  int capacity;                       // Max agents that can be assigned
-  ReligiousDenomination denomination; // Only for religious sites
-  std::vector<int> assignedAgents;    // Agent IDs at this location
+  int capacity;                       
+  ReligiousDenomination denomination; 
+  std::vector<int> assignedAgents;    
 
   Location()
       : id(-1), type(LocationType::HOME), townId(-1), capacity(0),
@@ -38,16 +29,14 @@ struct Location {
       : id(locId), type(locType), townId(town), name(locName), capacity(cap),
         denomination(denom) {}
 
-  // Add an agent to this location
+  
   bool assignAgent(int agentId) {
     if (static_cast<int>(assignedAgents.size()) >= capacity) {
-      return false; // Location full
+      return false; 
     }
     assignedAgents.push_back(agentId);
     return true;
-  }
-
-  // Get location type as string
+  }  
   std::string getTypeString() const {
     switch (type) {
     case LocationType::SCHOOL:

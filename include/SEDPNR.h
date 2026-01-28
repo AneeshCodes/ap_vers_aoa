@@ -1,26 +1,13 @@
 #pragma once
-
-// ============================================================================
-// SEDPNR STATE ENUMERATION
-// Susceptible -> Exposed -> Doubtful -> Propagating/Not-spreading -> Recovered
-// ============================================================================
-
 enum class SEDPNRState {
-  SUSCEPTIBLE = 0, // S: Has not encountered the claim
-  EXPOSED,         // E: Has been exposed to the claim
-  DOUBTFUL,        // D: Is evaluating the claim
-  PROPAGATING,     // P: Is actively spreading the claim
-  NOT_SPREADING,   // N: Has adopted but not spreading
-  RECOVERED,       // R: Has rejected or recovered from the claim
+  SUSCEPTIBLE = 0, 
+  EXPOSED,         
+  DOUBTFUL,        
+  PROPAGATING,     
+  NOT_SPREADING,   
+  RECOVERED,       
   NUM_STATES
 };
-
-// Note: SEDPNR parameters are now managed by the Configuration singleton
-
-// ============================================================================
-// HELPER FUNCTIONS FOR STATE NAMES
-// ============================================================================
-
 inline const char *stateToString(SEDPNRState state) {
   switch (state) {
   case SEDPNRState::SUSCEPTIBLE:

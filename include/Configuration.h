@@ -6,18 +6,18 @@
 #include <sstream>
 #include <string>
 
-// ============================================================================
-// UNIFIED CONFIGURATION
-// Tracks all simulation parameters in one place
-// ============================================================================
+
+
+
+
 
 struct Configuration {
-  // Simulation Core
+  
   int population = 1000;
   int timesteps = 1000;
   unsigned int seed = 42;
 
-  // Town/Location Settings
+  
   int num_towns = 5;
   int schools_per_town = 3;
   int religious_per_town = 5;
@@ -26,14 +26,14 @@ struct Configuration {
   int workplaces_per_town = 10;
   int workplace_capacity = 500;
 
-  // Agent Demographics & Credibility
+  
   double age_weight = 0.4;
   double edu_weight = 0.6;
   double age_optimal = 45.0;
   double age_spread = 20.0;
   double credibility_rejection_weight = 0.1;
 
-  // Social Network
+  
   int max_connections = 10;
   double base_interaction_prob = 0.05;
   double same_school_weight = 0.5;
@@ -41,11 +41,11 @@ struct Configuration {
   double same_town_weight = 0.2;
   double age_group_weight = 0.3;
   double ethnicity_weight = 0.2;
-  double religious_participation_prob = 0.6; // 60% of population is religious
+  double religious_participation_prob = 0.6; 
   double same_workplace_weight = 0.45;
   double homophily_strength = 2.0;
 
-  // SEDPNR Transitions
+  
   double prob_s_to_e = 0.1;
   double prob_e_to_d = 0.2;
   double prob_d_to_p = 0.05;
@@ -55,26 +55,26 @@ struct Configuration {
   double prob_p_to_r = 0.05;
   double prob_n_to_r = 0.05;
 
-  // Claim Mechanics
+  
   double misinfo_multiplier = 6.0;
   double truth_threshold = 0.8;
   double misinfo_threshold = 0.3;
 
-  // Simulation Settings
+  
   int output_interval = 1;
-  bool full_spatial_snapshot = true; // Record all agents for visualization
+  bool full_spatial_snapshot = true; 
 
-  // Connection Pruning
+  
   bool enable_connection_pruning = true;
-  int connection_patience = 50; // Steps before pruning unresponsive connection
+  int connection_patience = 50; 
 
-  // Singleton access
+  
   static Configuration &instance() {
     static Configuration config;
     return config;
   }
 
-  // Load from .cfg file
+  
   void load(const std::string &filename) {
     std::ifstream file(filename);
     if (!file.is_open())
